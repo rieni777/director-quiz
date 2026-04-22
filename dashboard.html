@@ -190,50 +190,72 @@
   }
 
   function finishQuiz() {
-    // ensure all questions answered (if not, alert)
-    if (answers.some(a => a === null)) {
-      alert("Please answer all questions before revealing your Director.");
-      return;
-    }
-    // count votes for each AI (A,B,C,D,E)
-    const voteCount = { A:0, B:0, C:0, D:0, E:0 };
-    for (let i = 0; i < questions.length; i++) {
-      const optIndex = answers[i];
-      const aiLetter = questions[i].options[optIndex].ai;
-      voteCount[aiLetter]++;
-    }
-    // find max
-    let maxLetter = 'A';
-    let maxVotes = 0;
-    for (let [letter, count] of Object.entries(voteCount)) {
-      if (count > maxVotes) {
-        maxVotes = count;
-        maxLetter = letter;
-      }
-    }
-    const result = resultsMap[maxLetter];
-    // render result card
-    const card = document.getElementById('quizCard');
-    card.innerHTML = `
-      <div style="text-align: center;">
-        <div style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 0.5rem;">⚡ YOUR DIRECTOR PROFILE</div>
-        <div class="result-name">${result.name}</div>
-        <div class="result-role">${result.role}</div>
-        <div class="result-desc">${result.description}</div>
-        <button class="restart-btn" id="restartQuiz">⟳ Take the quiz again</button>
-        <p style="margin-top: 1.2rem; font-size: 0.75rem; color:#8f7a6a;">Based on Season 3 Director Trials — built from Rieni Santoso's experiments</p>
-      </div>
-    `;
-    document.getElementById('restartQuiz').addEventListener('click', () => {
-      location.reload();
-    });
-    quizFinished = true;
+  // ensure all questions answered
+  if (answers.some(a => a === null)) {
+    alert("Please answer all questions before revealing your Director.");
+    return;
   }
 
-  // initial render
-  renderQuestion();
-  updateProgress();
+  // count votes for each AI
+  const voteCount = { A: 0, B: 0, C: 0, D: 0, E: 0 };
 
-  // prev button listener
-  prevBtn.addEventListener('click', prevQuestion);
+  for (let i = 0; i < questions.length; i++) {
+    const optIndex = answers[i];
+    const aiLetter = questions[i].options[optIndex].ai;
+    voteCount[aiLetter]++;
+  }
+
+  // find highest score
+  const maxVotes = Math.max(...Object.values(voteCount));
+  const tiedLetters = Object.keys(voteCount).filter(
+    letter => voteCount[letter] === maxVotes
+  );
+
+  let maxLetter;
+
+  if (tiedLetters.length === 1) {
+    maxLetter = tiedLetters[0];
+  } else {
+    // tie-breaker 1: last answered question
+    const lastAnswerIndex = answers[answers.length - 1];
+    const lastAiLetter = questions[questions.length - 1].options[lastAnswerIndex].ai;
+
+    if (tiedLetters.includes(lastAiLetter)) {
+      maxLetter = lastAiLetter;
+    } else {
+      // tie-breaker 2: scan backward through recent answers
+      maxLetter = tiedLetters[0];
+      for (let i = answers.length - 1; i >= 0; i--) {
+        const aiLetter = questions[i].options[answers[i]].ai;
+        if (tiedLetters.includes(aiLetter)) {
+          maxLetter = aiLetter;
+          break;
+        }
+      }
+    }
+  }
+
+  const result = resultsMap[maxLetter];
+
+  // render result card
+  const card = document.getElementById('quizCard');
+  card.innerHTML = `
+    <div style="text-align: center;">
+      <div style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 0.5rem;">⚡ YOUR DIRECTOR PROFILE</div>
+      <div class="result-name">${result.name}</div>
+      <div class="result-role">${result.role}</div>
+      <div class="result-desc">${result.description}</div>
+      <button class="restart-btn" id="restartQuiz">⟳ Take the quiz again</button>
+      <p style="margin-top: 1.2rem; font-size: 0.75rem; color:#8f7a6a;">
+        Based on Season 3 Director Trials — built from Rieni Santoso's experiments
+      </p>
+    </div>
+  `;
+
+  document.getElementById('restartQuiz').addEventListener('click', () => {
+    location.reload();
+  });
+
+  quizFinished = true;
+}
 </script>
