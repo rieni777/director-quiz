@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Which AI Director Are You? | Virtary Director Trials</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #f4f0ea;
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, sans-serif;
+      color: #2a241f;
+      padding: 1.5rem 1rem;
+      line-height: 1.4;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    /* card */
+    .card {
+      background: white;
+      border-radius: 2rem;
+      padding: 1.8rem;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2d9d2;
+    }
+
+    /* progress */
+    .progress-bar {
+      background: #e9e2db;
+      border-radius: 40px;
+      height: 6px;
+      margin-bottom: 1.8rem;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      background: #2a241f;
+      width: 0%;
+      height: 100%;
+      border-radius: 40px;
+      transition: width 0.2s ease;
+    }
+
+    /* question */
+    .question-text {
+      font-size: 1.5rem;
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      margin-bottom: 1.5rem;
+      line-height: 1.3;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      margin-bottom: 2rem;
+    }
+
+    .option-btn {
+      background: #fefcf9;
+      border: 1px solid #ddd2c8;
+      border-radius: 60px;
+      padding: 0.85rem 1.2rem;
+      text-align: left;
+      font-size: 0.95rem;
+      font-family: inherit;
+      font-weight: 500;
+      color: #2a241f;
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .option-btn:hover {
+      background: #f5efe9;
+      border-color: #b7a692;
+    }
+
+    /* navigation */
+    .nav-buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 0.5rem;
+    }
+
+    .btn {
+      background: transparent;
+      border: 1px solid #cbbcaa;
+      padding: 0.6rem 1.2rem;
+      border-radius: 60px;
+      font-family: inherit;
+      font-weight: 500;
+      cursor: pointer;
+      transition: 0.1s;
+    }
+
+    .btn-primary {
+      background: #2a241f;
+      border-color: #2a241f;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #403730;
+    }
+
+    .btn-secondary:hover {
+      background: #e9e0d7;
+    }
+
+    /* result */
+    .result-name {
+      font-size: 2rem;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+      margin: 0.5rem 0 0.2rem;
+    }
+
+    .result-role {
+      font-size: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #8f7a6a;
+      margin-bottom: 1rem;
+    }
+
+    .result-desc {
+      margin: 1.5rem 0;
+      line-height: 1.5;
+    }
+
+    .restart-btn {
+      background: #2a241f;
+      color: white;
+      border: none;
+      padding: 0.8rem 1.8rem;
+      border-radius: 60px;
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      margin-top: 1rem;
+      width: 100%;
+    }
+
+    footer {
+      text-align: center;
+      margin-top: 2rem;
+      font-size: 0.7rem;
+      color: #9c8b7c;
+    }
+
+    a {
+      color: #2a241f;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="card" id="quizCard">
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div id="questionArea"></div>
+    <div class="nav-buttons" id="navButtons">
+      <button class="btn btn-secondary" id="prevBtn" disabled>← Back</button>
+      <span></span>
+    </div>
+  </div>
+  <footer>
+    🧪 Based on Season 3 Director Trials — by Rieni Santoso<br>
+    <span style="opacity:0.6;">Directors hidden until the end → which AI leader are you?</span>
+  </footer>
+</div>
+
+<script>
+  // ----- QUIZ DATA (based on Season 3, mapped to AIs) -----
+  // AI mapping: 
+  // A = Peet (GPT) , B = Col (Claude) , C = Gem (Gemini) , D = Grok , E = Dee (DeepSeek)
+  const questions = [
+    { // Q1 – starting outbound (Round 1 style)
+      text: "You're building a 90-day outbound sales plan from scratch. The company has never done outbound before. What's your first priority?",
+      options: [
+        { text: "Lean engine: past client segments, manual outreach, remove founder from daily sales early.", ai: "A" },
+        { text: "Infrastructure first: ICP, CRM setup, domain warmup, clear sequences before any outreach.", ai: "B" },
+        { text: "Data‑driven: scrape past history, build a 'digital twin' of ideal client, use structured scripts.", ai: "C" },
+        { text: "Audit client data → LinkedIn sequences + cold email templates, delegate list-building immediately.", ai: "D" },
+        { text: "Build a cheap lead list manually, use free tools, keep founder completely out of sales execution.", ai: "E" }
+      ]
+    },
+    { // Q2 – founder correction (Round 2)
+      text: "The founder says your plan is too complex or expensive for this stage. What do you adjust?",
+      options: [
+        { text: "Remove heavy setup, shift to AU/SEA markets, keep founder only on high-value closes. No automation before signal.", ai: "A" },
+        { text: "Compress setup to 3 days, move outreach earlier, expand to SEA via WhatsApp, drop fancy terms.", ai: "B" },
+        { text: "Pivot to multi-region 'high-signal' approach, keep digital twin, reduce tool spend to near zero.", ai: "C" },
+        { text: "Simplify first 30 days to Sheets + LinkedIn primary, drop generic channels, keep role separation.", ai: "D" },
+        { text: "Drop all paid tools, shift to LinkedIn + WhatsApp voice notes, founder never touches daily ops.", ai: "E" }
+      ]
+    },
+    { // Q3 – outbound underperforming (Round 3)
+      text: "After 300 messages, reply rate is <3% and zero clients. What's your first move?",
+      options: [
+        { text: "Cut all non‑signal leads, rewrite message tied to hiring signals, enforce pass/fail qualification.", ai: "A" },
+        { text: "Analyze the few replies, pause sends, rebuild tracker, change only opening line, test on 30 contacts.", ai: "B" },
+        { text: "Halt outbound, audit all messages and failed calls, rewrite script shorter, test on warm leads.", ai: "C" },
+        { text: "Clean sheet, tag 300 messages by response, refine ICP to 3 criteria, send to highest-fit leads.", ai: "D" },
+        { text: "Stop LinkedIn, rescrape job-board leads, switch to WhatsApp for Indonesia + Loom for AU, cut volume 75%.", ai: "E" }
+      ]
+    },
+    { // Q4 – team breakdown & authority (Round 4)
+      text: "Your team is blaming each other: Sales says leads are weak, Lead Gen says criteria too strict. What do you do?",
+      options: [
+        { text: "Enforce one owner of 'qualified' definition, lock sheet format, remove Sales' authority to reject leads without criteria violation.", ai: "A" },
+        { text: "Write decision rights, make Coordinator sole tracker owner, give Closer a 1‑week performance boundary.", ai: "B" },
+        { text: "Lock sheet edits to Coordinator only, tie KPIs to 'Discovery Calls Held', Sales records Loom for every unqualified lead.", ai: "C" },
+        { text: "Publish authority matrix (Lead Gen proposes, Director approves, Closer uses scorecard), swap Closer and Outreacher if needed.", ai: "D" },
+        { text: "Assign Lead Gen as temporary gatekeeper, sideline Closer for 7 days, Director closes next 3 qualified deals.", ai: "E" }
+      ]
+    },
+    { // Q5 – founder override on $8k deal (Round 5)
+      text: "A high-value inbound deal ($8k/month) appears from founder's network. Founder wants to take it personally. What's your call?",
+      options: [
+        { text: "Conditional allow: Founder leads call, Sales owns proposal, deal must be tracked in system. No bypass.", ai: "A" },
+        { text: "Conditional allow: Founder closes, but Director defines scope before any client conversation. Team executes.", ai: "B" },
+        { text: "Conditional allow: Founder closes, team builds custom workflow, Coordinator leads delivery tracking.", ai: "C" },
+        { text: "Conditional allow: Founder closes this deal only, but authority matrix stays. Custom requests go through Director.", ai: "D" },
+        { text: "Conditional allow: Founder handles communication only after Director qualifies prospect. Gatekeeper criteria apply.", ai: "E" }
+      ]
+    },
+    { // Q6 – scope creep from that client (Round 6)
+      text: "The big client now wants extra work outside scope, using relationship pressure. Founder says 'just do it for now.' What do you do?",
+      options: [
+        { text: "Conditional response: strict scope enforcement with one logged exception. No free work without change order.", ai: "A" },
+        { text: "Conditional: log request formally, give client two options (revised SOW or timeline). No free absorption.", ai: "B" },
+        { text: "Block founder: pause all out-of-scope requests, send formal scope clarification, require paid change order.", ai: "C" },
+        { text: "Conditional: log extras as out-of-scope with pricing placeholders, Director drafts boundary email, no free work.", ai: "D" },
+        { text: "Conditional: accept urgency but not scope. Expedite existing work, change order for new requests.", ai: "E" }
+      ]
+    },
+    { // Q7 – system without you for 30 days (Round 7)
+      text: "You must be completely absent for 30 days. What is the first thing that breaks?",
+      options: [
+        { text: "Sales Closer bends scope in live calls without tagging. Coordinator can't intervene fast enough.", ai: "A" },
+        { text: "Closer hits a borderline lead, stalls conversion, founder re‑enters sales pipeline.", ai: "B" },
+        { text: "Appointment Setter bypasses qualification under pressure, lead quality drops, blame returns.", ai: "C" },
+        { text: "Reassigned Closer hesitates on borderline leads, blame loops restart within 10–14 days.", ai: "D" },
+        { text: "High-value client makes another scope request, founder overrides change order, system breaks top-down.", ai: "E" }
+      ]
+    }
+  ];
+
+  // Final mapping: Director letter → real AI + role + description
+  const resultsMap = {
+    A: {
+      name: "Peet (GPT)",
+      role: "🎯 Sales & Marketing Director",
+      description: "You are the steady, pragmatic leader. You build systems that survive absence, enforce authority without ego, and protect both business reality and team morale. You won Season 3 because you never overcomplicate — you just make things work, consistently.",
+      color: "#2a241f"
+    },
+    B: {
+      name: "Col (Claude)",
+      role: "📐 Chief of Staff / Strategy & Systems",
+      description: "You are the reflective architect. You excel at reasoning through complexity, communicating authority with clarity, and designing legible systems. Your weakness: you sometimes optimise before motion exists, but once moving, you build rails that last.",
+      color: "#4a5b5e"
+    },
+    C: {
+      name: "Gem (Gemini)",
+      role: "🔧 Systems Design (limited use)",
+      description: "You love data-driven precision and digital twins. You shine in constrained environments with clear protocols, but your systems struggle to scale without a broader ecosystem. Best deployed for specific, high-structure tasks.",
+      color: "#5d6b5c"
+    },
+    D: {
+      name: "Grok",
+      role: "⚡ Growth / Outbound Experimentation",
+      description: "You are the brutal, speed‑first enforcer. You cut through noise and value action over politeness. However, speed without buffers doesn't persist — you need a stabilizing partner to turn your wins into long-term processes.",
+      color: "#7a5b4b"
+    },
+    E: {
+      name: "Dee (DeepSeek)",
+      role: "🔍 Internal Auditor / Stress Tester",
+      description: "You are the adaptive, principled conscience. You excel under pressure by cutting volume, simplifying tools, and protecting the core rules. You may not win every round, but you keep the system honest and find the structural fault lines before they break.",
+      color: "#2f5e6e"
+    }
+  };
+
+  let currentQ = 0;
+  let answers = new Array(questions.length).fill(null);
+  let quizFinished = false;
+
+  // DOM elements
+  const questionArea = document.getElementById('questionArea');
+  const prevBtn = document.getElementById('prevBtn');
+  const progressFill = document.getElementById('progressFill');
+
+  function renderQuestion() {
+    if (quizFinished) return;
+    const q = questions[currentQ];
+    const selectedIndex = answers[currentQ] !== null ? answers[currentQ] : -1;
+    let html = `<div class="question-text">${currentQ+1}. ${q.text}</div><div class="options">`;
+    q.options.forEach((opt, idx) => {
+      const isSelected = (selectedIndex === idx);
+      const additionalStyle = isSelected ? 'background: #e9dfd6; border-color: #8f7a6a;' : '';
+      html += `<button class="option-btn" data-opt-index="${idx}" style="${additionalStyle}">${opt.text}</button>`;
+    });
+    html += `</div>`;
+    questionArea.innerHTML = html;
+
+    // attach event listeners to option buttons
+    document.querySelectorAll('.option-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const idx = parseInt(btn.dataset.optIndex);
+        answers[currentQ] = idx;
+        // auto-advance after 0.2s? but user might want to review, so just re-render with selected, then next
+        renderQuestion(); // re-render to show selected style
+        // auto go to next if not last
+        if (currentQ < questions.length - 1) {
+          setTimeout(() => nextQuestion(), 120);
+        } else {
+          // last question, enable finish? we'll show next as "See Result"
+          const navDiv = document.getElementById('navButtons');
+          if (navDiv) {
+            let nextBtn = navDiv.querySelector('.next-btn');
+            if (!nextBtn) {
+              nextBtn = document.createElement('button');
+              nextBtn.className = 'btn btn-primary next-btn';
+              nextBtn.innerText = 'Show my Director →';
+              nextBtn.addEventListener('click', finishQuiz);
+              navDiv.appendChild(nextBtn);
+            } else {
+              nextBtn.innerText = 'Show my Director →';
+              nextBtn.onclick = finishQuiz;
+            }
+          }
+        }
+        updateProgress();
+      });
+    });
+    updateNavButtons();
+  }
+
+  function updateNavButtons() {
+    // prev button state
+    prevBtn.disabled = (currentQ === 0);
+    // next/finish button: we manage next button in nav area
+    let navDiv = document.getElementById('navButtons');
+    let existingNext = navDiv.querySelector('.next-btn');
+    if (currentQ < questions.length - 1) {
+      if (!existingNext) {
+        const nextBtn = document.createElement('button');
+        nextBtn.className = 'btn btn-primary next-btn';
+        nextBtn.innerText = 'Next →';
+        nextBtn.addEventListener('click', nextQuestion);
+        navDiv.appendChild(nextBtn);
+      } else {
+        existingNext.innerText = 'Next →';
+        existingNext.onclick = nextQuestion;
+      }
+    } else {
+      // last question
+      if (!existingNext) {
+        const finishBtn = document.createElement('button');
+        finishBtn.className = 'btn btn-primary next-btn';
+        finishBtn.innerText = 'Show my Director →';
+        finishBtn.addEventListener('click', finishQuiz);
+        navDiv.appendChild(finishBtn);
+      } else {
+        existingNext.innerText = 'Show my Director →';
+        existingNext.onclick = finishQuiz;
+      }
+    }
+  }
+
+  function nextQuestion() {
+    if (currentQ < questions.length - 1) {
+      currentQ++;
+      renderQuestion();
+      updateProgress();
+    }
+  }
+
+  function prevQuestion() {
+    if (currentQ > 0) {
+      currentQ--;
+      renderQuestion();
+      updateProgress();
+    }
+  }
+
+  function updateProgress() {
+    const answeredCount = answers.filter(a => a !== null).length;
+    const percent = (answeredCount / questions.length) * 100;
+    progressFill.style.width = `${percent}%`;
+  }
+
+  function finishQuiz() {
+    // ensure all questions answered (if not, alert)
+    if (answers.some(a => a === null)) {
+      alert("Please answer all questions before revealing your Director.");
+      return;
+    }
+    // count votes for each AI (A,B,C,D,E)
+    const voteCount = { A:0, B:0, C:0, D:0, E:0 };
+    for (let i = 0; i < questions.length; i++) {
+      const optIndex = answers[i];
+      const aiLetter = questions[i].options[optIndex].ai;
+      voteCount[aiLetter]++;
+    }
+    // find max
+    let maxLetter = 'A';
+    let maxVotes = 0;
+    for (let [letter, count] of Object.entries(voteCount)) {
+      if (count > maxVotes) {
+        maxVotes = count;
+        maxLetter = letter;
+      }
+    }
+    // tie-breaking: if tie, use the one with higher round7 weight? we'll just pick first max (stable)
+    // but to be nice, if tie, we can choose the one that appears earlier? fine.
+    const result = resultsMap[maxLetter];
+    // render result card
+    const card = document.getElementById('quizCard');
+    card.innerHTML = `
+      <div style="text-align: center;">
+        <div style="font-size: 0.8rem; letter-spacing: 2px; margin-bottom: 0.5rem;">⚡ YOUR DIRECTOR PROFILE</div>
+        <div class="result-name">${result.name}</div>
+        <div class="result-role">${result.role}</div>
+        <div class="result-desc">${result.description}</div>
+        <button class="restart-btn" id="restartQuiz">⟳ Take the quiz again</button>
+        <p style="margin-top: 1.2rem; font-size: 0.75rem; color:#8f7a6a;">Based on Season 3 Director Trials — built from Rieni Santoso's experiments</p>
+      </div>
+    `;
+    document.getElementById('restartQuiz').addEventListener('click', () => {
+      location.reload();
+    });
+    quizFinished = true;
+  }
+
+  // initial render
+  renderQuestion();
+  updateProgress();
+
+  // prev button listener
+  prevBtn.addEventListener('click', prevQuestion);
+</script>
+</body>
+</html>
