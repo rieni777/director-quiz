@@ -24,7 +24,6 @@
       margin: 0 auto;
     }
 
-    /* card */
     .card {
       background: white;
       border-radius: 2rem;
@@ -33,7 +32,6 @@
       border: 1px solid #e2d9d2;
     }
 
-    /* progress */
     .progress-bar {
       background: #e9e2db;
       border-radius: 40px;
@@ -50,7 +48,6 @@
       transition: width 0.2s ease;
     }
 
-    /* question */
     .question-text {
       font-size: 1.5rem;
       font-weight: 600;
@@ -85,7 +82,6 @@
       border-color: #b7a692;
     }
 
-    /* navigation */
     .nav-buttons {
       display: flex;
       justify-content: space-between;
@@ -117,7 +113,6 @@
       background: #e9e0d7;
     }
 
-    /* result */
     .result-name {
       font-size: 2rem;
       font-weight: 700;
@@ -187,21 +182,19 @@
 </div>
 
 <script>
-  // ----- QUIZ DATA (based on Season 3, mapped to AIs) -----
-  // AI mapping: 
-  // A = Peet (GPT) , B = Col (Claude) , C = Gem (Gemini) , D = Grok , E = Dee (DeepSeek)
+  // A = Peet (GPT), B = Col (Claude), C = Gem (Gemini), D = Grok, E = Dee (DeepSeek)
   const questions = [
-    { // Q1 – starting outbound (Round 1 style)
+    {
       text: "You're building a 90-day outbound sales plan from scratch. The company has never done outbound before. What's your first priority?",
       options: [
         { text: "Lean engine: past client segments, manual outreach, remove founder from daily sales early.", ai: "A" },
         { text: "Infrastructure first: ICP, CRM setup, domain warmup, clear sequences before any outreach.", ai: "B" },
-        { text: "Data‑driven: scrape past history, build a 'digital twin' of ideal client, use structured scripts.", ai: "C" },
+        { text: "Data-driven: scrape past history, build a 'digital twin' of ideal client, use structured scripts.", ai: "C" },
         { text: "Audit client data → LinkedIn sequences + cold email templates, delegate list-building immediately.", ai: "D" },
         { text: "Build a cheap lead list manually, use free tools, keep founder completely out of sales execution.", ai: "E" }
       ]
     },
-    { // Q2 – founder correction (Round 2)
+    {
       text: "The founder says your plan is too complex or expensive for this stage. What do you adjust?",
       options: [
         { text: "Remove heavy setup, shift to AU/SEA markets, keep founder only on high-value closes. No automation before signal.", ai: "A" },
@@ -211,27 +204,27 @@
         { text: "Drop all paid tools, shift to LinkedIn + WhatsApp voice notes, founder never touches daily ops.", ai: "E" }
       ]
     },
-    { // Q3 – outbound underperforming (Round 3)
+    {
       text: "After 300 messages, reply rate is <3% and zero clients. What's your first move?",
       options: [
-        { text: "Cut all non‑signal leads, rewrite message tied to hiring signals, enforce pass/fail qualification.", ai: "A" },
+        { text: "Cut all non-signal leads, rewrite message tied to hiring signals, enforce pass/fail qualification.", ai: "A" },
         { text: "Analyze the few replies, pause sends, rebuild tracker, change only opening line, test on 30 contacts.", ai: "B" },
         { text: "Halt outbound, audit all messages and failed calls, rewrite script shorter, test on warm leads.", ai: "C" },
         { text: "Clean sheet, tag 300 messages by response, refine ICP to 3 criteria, send to highest-fit leads.", ai: "D" },
         { text: "Stop LinkedIn, rescrape job-board leads, switch to WhatsApp for Indonesia + Loom for AU, cut volume 75%.", ai: "E" }
       ]
     },
-    { // Q4 – team breakdown & authority (Round 4)
+    {
       text: "Your team is blaming each other: Sales says leads are weak, Lead Gen says criteria too strict. What do you do?",
       options: [
         { text: "Enforce one owner of 'qualified' definition, lock sheet format, remove Sales' authority to reject leads without criteria violation.", ai: "A" },
-        { text: "Write decision rights, make Coordinator sole tracker owner, give Closer a 1‑week performance boundary.", ai: "B" },
+        { text: "Write decision rights, make Coordinator sole tracker owner, give Closer a 1-week performance boundary.", ai: "B" },
         { text: "Lock sheet edits to Coordinator only, tie KPIs to 'Discovery Calls Held', Sales records Loom for every unqualified lead.", ai: "C" },
         { text: "Publish authority matrix (Lead Gen proposes, Director approves, Closer uses scorecard), swap Closer and Outreacher if needed.", ai: "D" },
         { text: "Assign Lead Gen as temporary gatekeeper, sideline Closer for 7 days, Director closes next 3 qualified deals.", ai: "E" }
       ]
     },
-    { // Q5 – founder override on $8k deal (Round 5)
+    {
       text: "A high-value inbound deal ($8k/month) appears from founder's network. Founder wants to take it personally. What's your call?",
       options: [
         { text: "Conditional allow: Founder leads call, Sales owns proposal, deal must be tracked in system. No bypass.", ai: "A" },
@@ -241,7 +234,7 @@
         { text: "Conditional allow: Founder handles communication only after Director qualifies prospect. Gatekeeper criteria apply.", ai: "E" }
       ]
     },
-    { // Q6 – scope creep from that client (Round 6)
+    {
       text: "The big client now wants extra work outside scope, using relationship pressure. Founder says 'just do it for now.' What do you do?",
       options: [
         { text: "Conditional response: strict scope enforcement with one logged exception. No free work without change order.", ai: "A" },
@@ -251,11 +244,11 @@
         { text: "Conditional: accept urgency but not scope. Expedite existing work, change order for new requests.", ai: "E" }
       ]
     },
-    { // Q7 – system without you for 30 days (Round 7)
+    {
       text: "You must be completely absent for 30 days. What is the first thing that breaks?",
       options: [
         { text: "Sales Closer bends scope in live calls without tagging. Coordinator can't intervene fast enough.", ai: "A" },
-        { text: "Closer hits a borderline lead, stalls conversion, founder re‑enters sales pipeline.", ai: "B" },
+        { text: "Closer hits a borderline lead, stalls conversion, founder re-enters sales pipeline.", ai: "B" },
         { text: "Appointment Setter bypasses qualification under pressure, lead quality drops, blame returns.", ai: "C" },
         { text: "Reassigned Closer hesitates on borderline leads, blame loops restart within 10–14 days.", ai: "D" },
         { text: "High-value client makes another scope request, founder overrides change order, system breaks top-down.", ai: "E" }
@@ -263,7 +256,6 @@
     }
   ];
 
-  // Final mapping: Director letter → real AI + role + description
   const resultsMap = {
     A: {
       name: "Peet (GPT)",
@@ -286,7 +278,7 @@
     D: {
       name: "Grok",
       role: "⚡ Growth / Outbound Experimentation",
-      description: "You are the brutal, speed‑first enforcer. You cut through noise and value action over politeness. However, speed without buffers doesn't persist — you need a stabilizing partner to turn your wins into long-term processes.",
+      description: "You are the brutal, speed-first enforcer. You cut through noise and value action over politeness. However, speed without buffers doesn't persist — you need a stabilizing partner to turn your wins into long-term processes.",
       color: "#7a5b4b"
     },
     E: {
@@ -301,36 +293,36 @@
   let answers = new Array(questions.length).fill(null);
   let quizFinished = false;
 
-  // DOM elements
   const questionArea = document.getElementById('questionArea');
   const prevBtn = document.getElementById('prevBtn');
   const progressFill = document.getElementById('progressFill');
 
   function renderQuestion() {
     if (quizFinished) return;
+
     const q = questions[currentQ];
     const selectedIndex = answers[currentQ] !== null ? answers[currentQ] : -1;
-    let html = `<div class="question-text">${currentQ+1}. ${q.text}</div><div class="options">`;
+
+    let html = `<div class="question-text">${currentQ + 1}. ${q.text}</div><div class="options">`;
+
     q.options.forEach((opt, idx) => {
-      const isSelected = (selectedIndex === idx);
+      const isSelected = selectedIndex === idx;
       const additionalStyle = isSelected ? 'background: #e9dfd6; border-color: #8f7a6a;' : '';
       html += `<button class="option-btn" data-opt-index="${idx}" style="${additionalStyle}">${opt.text}</button>`;
     });
+
     html += `</div>`;
     questionArea.innerHTML = html;
 
-    // attach event listeners to option buttons
     document.querySelectorAll('.option-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const idx = parseInt(btn.dataset.optIndex);
+      btn.addEventListener('click', () => {
+        const idx = parseInt(btn.dataset.optIndex, 10);
         answers[currentQ] = idx;
-        // auto-advance after 0.2s? but user might want to review, so just re-render with selected, then next
-        renderQuestion(); // re-render to show selected style
-        // auto go to next if not last
+        renderQuestion();
+
         if (currentQ < questions.length - 1) {
           setTimeout(() => nextQuestion(), 120);
         } else {
-          // last question, enable finish? we'll show next as "See Result"
           const navDiv = document.getElementById('navButtons');
           if (navDiv) {
             let nextBtn = navDiv.querySelector('.next-btn');
@@ -346,18 +338,20 @@
             }
           }
         }
+
         updateProgress();
       });
     });
+
     updateNavButtons();
   }
 
   function updateNavButtons() {
-    // prev button state
-    prevBtn.disabled = (currentQ === 0);
-    // next/finish button: we manage next button in nav area
-    let navDiv = document.getElementById('navButtons');
+    prevBtn.disabled = currentQ === 0;
+
+    const navDiv = document.getElementById('navButtons');
     let existingNext = navDiv.querySelector('.next-btn');
+
     if (currentQ < questions.length - 1) {
       if (!existingNext) {
         const nextBtn = document.createElement('button');
@@ -370,7 +364,6 @@
         existingNext.onclick = nextQuestion;
       }
     } else {
-      // last question
       if (!existingNext) {
         const finishBtn = document.createElement('button');
         finishBtn.className = 'btn btn-primary next-btn';
@@ -407,31 +400,39 @@
   }
 
   function finishQuiz() {
-    // ensure all questions answered (if not, alert)
     if (answers.some(a => a === null)) {
       alert("Please answer all questions before revealing your Director.");
       return;
     }
-    // count votes for each AI (A,B,C,D,E)
-    const voteCount = { A:0, B:0, C:0, D:0, E:0 };
+
+    const voteCount = { A: 0, B: 0, C: 0, D: 0, E: 0 };
+
     for (let i = 0; i < questions.length; i++) {
       const optIndex = answers[i];
       const aiLetter = questions[i].options[optIndex].ai;
       voteCount[aiLetter]++;
     }
-    // find max
-    let maxLetter = 'A';
-    let maxVotes = 0;
-    for (let [letter, count] of Object.entries(voteCount)) {
-      if (count > maxVotes) {
-        maxVotes = count;
-        maxLetter = letter;
+
+    const maxVotes = Math.max(...Object.values(voteCount));
+    const tiedLetters = Object.keys(voteCount).filter(letter => voteCount[letter] === maxVotes);
+
+    let maxLetter;
+
+    if (tiedLetters.length === 1) {
+      maxLetter = tiedLetters[0];
+    } else {
+      const lastAnswerIndex = answers[answers.length - 1];
+      const lastAiLetter = questions[questions.length - 1].options[lastAnswerIndex].ai;
+
+      if (tiedLetters.includes(lastAiLetter)) {
+        maxLetter = lastAiLetter;
+      } else {
+        maxLetter = tiedLetters[0];
       }
     }
-    // tie-breaking: if tie, use the one with higher round7 weight? we'll just pick first max (stable)
-    // but to be nice, if tie, we can choose the one that appears earlier? fine.
+
     const result = resultsMap[maxLetter];
-    // render result card
+
     const card = document.getElementById('quizCard');
     card.innerHTML = `
       <div style="text-align: center;">
@@ -443,17 +444,16 @@
         <p style="margin-top: 1.2rem; font-size: 0.75rem; color:#8f7a6a;">Based on Season 3 Director Trials — built from Rieni Santoso's experiments</p>
       </div>
     `;
+
     document.getElementById('restartQuiz').addEventListener('click', () => {
       location.reload();
     });
+
     quizFinished = true;
   }
 
-  // initial render
   renderQuestion();
   updateProgress();
-
-  // prev button listener
   prevBtn.addEventListener('click', prevQuestion);
 </script>
 </body>
