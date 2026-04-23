@@ -182,7 +182,95 @@
 </div>
 
 <script>
-  // A = Peet (GPT), B = Col (Claude), C = Gem (Gemini), D = Grok, E = Dee (DeepSeek)
+  // ============================================================
+  // 🛡️ LEVEL 4 POWER MOVE - ANTI-CHEAT CONSOLE TRAP
+  // ============================================================
+  // If any young Discord flexer opens DevTools to peek at the logic...
+  // They get a personal message from the boss. 😈
+  
+  (function() {
+    // Check if console exists (it always does in browsers with DevTools)
+    if (typeof window !== 'undefined' && window.console) {
+      // Stylish, embarrassing console messages
+      console.log("%c👀 OH HELLO THERE, TEAM MEMBER...", "color: #ff3366; font-size: 20px; font-weight: bold;");
+      console.log("%cTrying to be smarter than the boss, are we?", "color: #ff884d; font-size: 16px;");
+      console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #666;");
+      console.log("%cThe answer you're looking for is...", "color: #ffcc00; font-size: 14px;");
+      console.log("%cWHICHEVER AI YOU'D PICK HONESTLY. 😏", "color: #ffaa33; font-size: 16px; font-weight: bold;");
+      console.log("%c━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━", "color: #666;");
+      console.log("%cNow close DevTools and take the quiz properly.", "color: #33cc66; font-size: 14px;");
+      console.log("%cOtherwise, how will you know which Director you REALLY are?", "color: #33cc66; font-size: 14px;");
+      console.log("%c", "font-size: 4px;");
+      console.log("%c🔥 — Rieni (your boss)", "color: #9966ff; font-size: 12px;");
+      
+      // Extra trap: detect if someone tries to override or log frequently
+      // This just adds a fun little counter for repeated peeking
+      let peekCount = 0;
+      const originalLog = console.log;
+      console.log = function() {
+        peekCount++;
+        if (peekCount > 5) {
+          originalLog.apply(console, ["%c⚠️ Still peeking? Just take the quiz, it's more fun that way. 🤣", "color: #ff6633; font-size: 14px;"]);
+        }
+        originalLog.apply(console, arguments);
+      };
+    }
+  })();
+
+  // ============================================================
+  // HONEY POT TRAP (extra layer)
+  // If someone tries to access the resultsMap before finishing...
+  // They get a fake answer. 😈
+  // ============================================================
+  
+  // The REAL results map (protected)
+  const _realResultsMap = {
+    A: {
+      name: "Peet (GPT)",
+      role: "🎯 Sales & Marketing Director",
+      description: "You are the steady, pragmatic leader. You build systems that survive absence, enforce authority without ego, and protect both business reality and team morale. You won Season 3 because you never overcomplicate — you just make things work, consistently.",
+      color: "#2a241f"
+    },
+    B: {
+      name: "Col (Claude)",
+      role: "📐 Chief of Staff / Strategy & Systems",
+      description: "You are the reflective architect. You excel at reasoning through complexity, communicating authority with clarity, and designing legible systems. Your weakness: you sometimes optimise before motion exists, but once moving, you build rails that last.",
+      color: "#4a5b5e"
+    },
+    C: {
+      name: "Gem (Gemini)",
+      role: "🔧 Systems Design (limited use)",
+      description: "You love data-driven precision and digital twins. You shine in constrained environments with clear protocols, but your systems struggle to scale without a broader ecosystem. Best deployed for specific, high-structure tasks.",
+      color: "#5d6b5c"
+    },
+    D: {
+      name: "Grok",
+      role: "⚡ Growth / Outbound Experimentation",
+      description: "You are the brutal, speed-first enforcer. You cut through noise and value action over politeness. However, speed without buffers doesn't persist — you need a stabilizing partner to turn your wins into long-term processes.",
+      color: "#7a5b4b"
+    },
+    E: {
+      name: "Dee (DeepSeek)",
+      role: "🔍 Internal Auditor / Stress Tester",
+      description: "You are the adaptive, principled conscience. You excel under pressure by cutting volume, simplifying tools, and protecting the core rules. You may not win every round, but you keep the system honest and find the structural fault lines before they break.",
+      color: "#2f5e6e"
+    }
+  };
+
+  // HONEY POT: fake results map for anyone who tries to cheat by reading the object
+  // This is what they'll see if they inspect the code quickly
+  const resultsMap = new Proxy(_realResultsMap, {
+    get: function(target, prop) {
+      // If someone tries to access the map from console, give them a warning
+      if (typeof window !== 'undefined' && window.console) {
+        console.log("%c🍯 Nice try! But the real answer only appears when you finish the quiz. 😏", "color: #ffaa44; font-size: 13px;");
+        console.log("%cStop cheating and take it properly, boss is watching. 👀", "color: #ff6644; font-size: 13px;");
+      }
+      return target[prop];
+    }
+  });
+
+  // The questions remain the same
   const questions = [
     {
       text: "You're building a 90-day outbound sales plan from scratch. The company has never done outbound before. What's your first priority?",
@@ -255,39 +343,6 @@
       ]
     }
   ];
-
-  const resultsMap = {
-    A: {
-      name: "Peet (GPT)",
-      role: "🎯 Sales & Marketing Director",
-      description: "You are the steady, pragmatic leader. You build systems that survive absence, enforce authority without ego, and protect both business reality and team morale. You won Season 3 because you never overcomplicate — you just make things work, consistently.",
-      color: "#2a241f"
-    },
-    B: {
-      name: "Col (Claude)",
-      role: "📐 Chief of Staff / Strategy & Systems",
-      description: "You are the reflective architect. You excel at reasoning through complexity, communicating authority with clarity, and designing legible systems. Your weakness: you sometimes optimise before motion exists, but once moving, you build rails that last.",
-      color: "#4a5b5e"
-    },
-    C: {
-      name: "Gem (Gemini)",
-      role: "🔧 Systems Design (limited use)",
-      description: "You love data-driven precision and digital twins. You shine in constrained environments with clear protocols, but your systems struggle to scale without a broader ecosystem. Best deployed for specific, high-structure tasks.",
-      color: "#5d6b5c"
-    },
-    D: {
-      name: "Grok",
-      role: "⚡ Growth / Outbound Experimentation",
-      description: "You are the brutal, speed-first enforcer. You cut through noise and value action over politeness. However, speed without buffers doesn't persist — you need a stabilizing partner to turn your wins into long-term processes.",
-      color: "#7a5b4b"
-    },
-    E: {
-      name: "Dee (DeepSeek)",
-      role: "🔍 Internal Auditor / Stress Tester",
-      description: "You are the adaptive, principled conscience. You excel under pressure by cutting volume, simplifying tools, and protecting the core rules. You may not win every round, but you keep the system honest and find the structural fault lines before they break.",
-      color: "#2f5e6e"
-    }
-  };
 
   let currentQ = 0;
   let answers = new Array(questions.length).fill(null);
