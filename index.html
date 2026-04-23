@@ -79,7 +79,6 @@
       color: #ffffff;
     }
 
-    /* NEW: intro + trigger styles (cleaner, sharper, immersive) */
     .intro {
       max-width: 640px;
       margin: 0 auto 26px;
@@ -233,14 +232,12 @@
 
     <div class="byline">5 AIs. Real tests. One champion.</div>
 
-    <!-- ORIGINAL SUBTITLE (kept for context & flow) -->
     <p class="sub">
       Enter the game and choose your favorite contender first.
       This is not hype.
       This is <strong>intelligence under pressure</strong>.
     </p>
 
-    <!-- FRESH INTRO BLOCK: controlled experiment tone (Peet's recommended block) -->
     <p class="intro">
       This is not a demo.
       This is a controlled experiment.
@@ -253,13 +250,11 @@
       No second chances.
     </p>
 
-    <!-- TRIGGER LINE: call to action before cards -->
     <p class="trigger">
       Pick one.
       Then we test if it holds.
     </p>
 
-    <!-- AI CARDS SECTION -->
     <section class="cards" id="aiCards">
       <article class="card deepseek" data-name="DeepSeek">
         <div class="avatar">D</div>
@@ -294,10 +289,9 @@
 
     <div class="actions">
       <div class="chosen" id="chosenText">No AI chosen yet</div>
-      <!-- FIXED: duplicated anchor tag was breaking href. Now clean and correct link -->
-      <a class="enter-btn" id="enterBtn" href="https://rieni777.github.io/director-quiz/dashboard.html">
-  🎮 Enter the Game
-</a>
+      <a class="enter-btn" id="enterBtn" href="dashboard.html">
+        🎮 Enter the Game
+      </a>
     </div>
 
     <div class="tiny">
@@ -310,8 +304,8 @@
     const chosenText = document.getElementById("chosenText");
     const enterBtn = document.getElementById("enterBtn");
 
-    // Store base URL for director quiz (original target)
-    const baseGameUrl = "https://rieni777.github.io/director-quiz/dashboard.html";
+    // Store base URL for director quiz - now pointing to dashboard.html
+    const baseGameUrl = "dashboard.html";
 
     cards.forEach(card => {
       card.addEventListener("click", () => {
@@ -324,13 +318,10 @@
         const name = card.getAttribute("data-name");
         chosenText.textContent = `Chosen contender: ${name}`;
 
-        // Append ?pick=AI_NAME to the game URL (preserves the original flow)
+        // Append ?pick=AI_NAME to the game URL
         enterBtn.href = `${baseGameUrl}?pick=${encodeURIComponent(name)}`;
       });
     });
-
-    // Optional: if you want a default selected state (uncomment if needed)
-    // For better UX, we keep no default to force user selection, but fully functional.
   </script>
 </body>
 </html>
