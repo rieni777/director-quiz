@@ -69,7 +69,7 @@
 
     .sub {
       max-width: 760px;
-      margin: 0 auto 30px;
+      margin: 0 auto 20px;
       color: #d8d0ea;
       font-size: 1rem;
       line-height: 1.6;
@@ -77,6 +77,28 @@
 
     .sub strong {
       color: #ffffff;
+    }
+
+    /* NEW: intro + trigger styles (cleaner, sharper, immersive) */
+    .intro {
+      max-width: 640px;
+      margin: 0 auto 26px;
+      font-size: 0.96rem;
+      line-height: 1.8;
+      color: #d6cfff;
+      opacity: 0.92;
+      text-align: center;
+      white-space: pre-line;
+    }
+
+    .trigger {
+      margin: 0 auto 28px;
+      font-size: 0.98rem;
+      line-height: 1.6;
+      color: #f2e8ff;
+      opacity: 0.9;
+      text-align: center;
+      font-weight: 600;
     }
 
     .cards {
@@ -211,12 +233,33 @@
 
     <div class="byline">5 AIs. Real tests. One champion.</div>
 
+    <!-- ORIGINAL SUBTITLE (kept for context & flow) -->
     <p class="sub">
       Enter the game and choose your favorite contender first.
       This is not hype.
       This is <strong>intelligence under pressure</strong>.
     </p>
 
+    <!-- FRESH INTRO BLOCK: controlled experiment tone (Peet's recommended block) -->
+    <p class="intro">
+      This is not a demo.
+      This is a controlled experiment.
+
+      Five AI systems.
+      Same constraints.
+      Different decisions.
+
+      No prompting tricks.
+      No second chances.
+    </p>
+
+    <!-- TRIGGER LINE: call to action before cards -->
+    <p class="trigger">
+      Pick one.
+      Then we test if it holds.
+    </p>
+
+    <!-- AI CARDS SECTION -->
     <section class="cards" id="aiCards">
       <article class="card deepseek" data-name="DeepSeek">
         <div class="avatar">D</div>
@@ -251,9 +294,10 @@
 
     <div class="actions">
       <div class="chosen" id="chosenText">No AI chosen yet</div>
-      <a class="enter-btn" id="enterBtn" <a class="enter-btn" href="https://rieni777.github.io/director-quiz/">
-  🎮 Enter the Game
-</a>>🎮 Enter the Game</a>
+      <!-- FIXED: duplicated anchor tag was breaking href. Now clean and correct link -->
+      <a class="enter-btn" id="enterBtn" href="https://rieni777.github.io/director-quiz/">
+        🎮 Enter the Game
+      </a>
     </div>
 
     <div class="tiny">
@@ -266,17 +310,27 @@
     const chosenText = document.getElementById("chosenText");
     const enterBtn = document.getElementById("enterBtn");
 
+    // Store base URL for director quiz (original target)
+    const baseGameUrl = "https://rieni777.github.io/director-quiz/";
+
     cards.forEach(card => {
       card.addEventListener("click", () => {
+        // Remove selected class from all cards
         cards.forEach(c => c.classList.remove("selected"));
+        // Add selected class to current card
         card.classList.add("selected");
 
+        // Get AI name from data-name attribute
         const name = card.getAttribute("data-name");
         chosenText.textContent = `Chosen contender: ${name}`;
 
-        enterBtn.href = `dashboard.html?pick=${encodeURIComponent(name)}`;
+        // Append ?pick=AI_NAME to the game URL (preserves the original flow)
+        enterBtn.href = `${baseGameUrl}?pick=${encodeURIComponent(name)}`;
       });
     });
+
+    // Optional: if you want a default selected state (uncomment if needed)
+    // For better UX, we keep no default to force user selection, but fully functional.
   </script>
 </body>
 </html>
